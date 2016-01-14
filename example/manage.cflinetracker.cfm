@@ -25,4 +25,4 @@
     <cfoutput>#fragentClass.getAgentInstrumentation().get("cflpi").removeTransformer()#</cfoutput>
 </cfif>
 
-<cfdump var=#fragentClass.getAgentInstrumentation().get("cflpi").dump()#> 
+<cfoutput>Tracking : #URL.track is true#</cfoutput>
