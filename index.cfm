@@ -15,7 +15,6 @@
    limitations under the License.
 
 -->
-
 <!--
 Based upon http://www.bennadel.com/projects/kinky-file-explorer.htm
 The Kinky File Explorer is a totally free ColdFusion based file exploration system
