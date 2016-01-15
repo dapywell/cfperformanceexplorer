@@ -24,3 +24,6 @@ Once Track CFML Line Execution Times is enabled, every page and component run in
 
 To open the performance explorer simple call the index.cfm page in the folder where you have deployed the ColdFusion Performance Explorer in a webbrowser. For example: [http://127.0.0.1/cfpe/index.cfm]
 
+**Opening a large application may take a long time because the explorer scans recursively through the entire directory structure when first called**
+
+
