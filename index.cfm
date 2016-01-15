@@ -30,7 +30,7 @@ designed to provide read-only access to a specific directory of files.
    files that are in sub-directories of this one. Access
    above this directory will be highly restricted.
 --->
-    <cfset REQUEST.RootDirectory = ExpandPath("./")/>
+    <cfset REQUEST.RootDirectory = ExpandPath("../")/>
 
 <!---
    Set the list of valid file extensions. This way, you
