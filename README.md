@@ -27,3 +27,5 @@ To open the performance explorer simple call the index.cfm page in the folder wh
 **Opening a large application may take a long time because the explorer scans recursively through the entire directory structure when first called**
 
 
+
+
