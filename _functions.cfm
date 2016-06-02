@@ -254,7 +254,7 @@ designed to provide read-only access to a specific directory of files.
 
 <!--- Define arguments. --->
     <cfargument
-            name="url"
+            name="urlToTrack"
             type="string"
             required="true"
             hint="The URL that is being tracked."/>
@@ -263,13 +263,13 @@ designed to provide read-only access to a specific directory of files.
             name="lineNo"
             type="string"
             required="true"
-            hint="The URL that is being tracked."/>
+            hint="The line number in the URL that is being tracked."/>
     <cfset emptyStruct = StructNew()>
     <cftry>
         <cfset fragentClass = createObject("java", "com.intergral.fusionreactor.agent.Agent")>
         <cfset lineMetric = createObject("java", "com.intergral.fusionreactor.plugin.coldfusion.lineperformance.LineMetric")>
         <cfset lineMetricMap = createObject("java", "java.util.Map")>
-        <cfset lineMetricMap = fragentClass.getAgentInstrumentation().get("cflpi").getLineMetrics(url)>
+        <cfset lineMetricMap = fragentClass.getAgentInstrumentation().get("cflpi").getLineMetrics( urlToTrack )>
         <cfset lineMets = StructNew()>
         <cfif lineMetricMap.containsKey(JavaCast("int",lineNo)) IS True>
             <cfset lineMetric = lineMetricMap.get(JavaCast("int",lineNo))>
