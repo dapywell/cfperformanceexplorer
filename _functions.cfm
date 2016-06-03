@@ -149,28 +149,22 @@ designed to provide read-only access to a specific directory of files.
             <cfif LOCAL.File.RecordCount>
 
                 <cfloop query="LOCAL.File">
+                    <cfset fileExtension = ListLast( LOCAL.File.name, "." )>
 
-<!--- Get full, expanded path of the current file. --->
-                    <cfset LOCAL.FilePath = (LOCAL.File.directory & ARGUMENTS.Slash & LOCAL.File.name)/>
-
-<!---
-    Get relative file path. To do this, we are
-    going to subtract the root directory from the
-    full file path.
---->
-                    <cfset LOCAL.RelativeFilePath = ReplaceNoCase(
-                        LOCAL.FilePath,
-                        ARGUMENTS.RootDirectory,
-                            "",
-                            "one"
-                            )/>
-
+                    <!--- Check file extensions if 'cfc' or 'cfm' then add to file browser --->
+                    <cfif fileExtension EQ "cfc" OR fileExtension EQ "cfm" >
+                        <!--- Get full, expanded path of the current file. --->
+                        <cfset LOCAL.FilePath = (LOCAL.File.directory & ARGUMENTS.Slash & LOCAL.File.name)/>
+                        <!---
+                            Get relative file path. To do this, we are
+                            going to subtract the root directory from the
+                            full file path.
+                        --->
+                        <cfset LOCAL.RelativeFilePath = ReplaceNoCase(LOCAL.FilePath,ARGUMENTS.RootDirectory, "","one")/>
                         <li>
-                                <a
-                                id="#LOCAL.RelativeFilePath#"
-                                class="file<cfif (ARGUMENTS.TargetFile EQ LOCAL.FilePath)> selected</cfif>"
-                    >#LOCAL.File.name#</a>
-                    </li>
+                            <a id="#LOCAL.RelativeFilePath#" class="file<cfif (ARGUMENTS.TargetFile EQ LOCAL.FilePath)> selected</cfif>">#LOCAL.File.name#</a>
+                        </li>
+                    </cfif>
                 </cfloop>
 
             </cfif>
