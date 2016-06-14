@@ -285,6 +285,12 @@ designed to provide read-only access to a specific directory of files.
                         </thead>
                         <tbody>
                         <cfset i = 1>
+						
+						<cfset metrics = getLineMets(REQUEST.TargetFile, i)>
+                        <cfif StructIsEmpty(metrics)>
+                               <h1 id="warnMetricData"> No metric data currently exists for this file. </h1>
+                        </cfif>
+
                         <cfloop list="#REQUEST.FileData#" index="chars" delimiters="#chr(10)#">
                             <cfset metrics = getLineMets(REQUEST.TargetFile, i)>
                             <cfif StructIsEmpty(metrics)>
@@ -294,11 +300,14 @@ designed to provide read-only access to a specific directory of files.
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                </cfif>
-                                <td class="line_number" id="L#i#" rel="##L#i#">#i#</td>
+                                    </cfif>
+                                    <td class="line_number" id="L#i#" rel="##L#i#">
+                                        #i#
+                                    </td>
                                     <td class="highlight line full" id='LC#i#'>
-                            <pre>#htmlEditFormat(chars)#</pre></td>
-                            </tr>
+                                        <pre>#htmlEditFormat(chars)#</pre>
+                                    </td>
+                                </tr>
                             <cfelse>
                                 <tr class="theline">
                                 <cfif showDebug eq "true">
@@ -338,15 +347,15 @@ designed to provide read-only access to a specific directory of files.
                         <cftry>
                                 <p>
                                     >Path: #REQUEST.TargetFile#<br>
-                                >Total lines with a count over 5000: #totalCountOver#<br>
-                                >Total lines with an execution time of over 1ms: #totalTimeOver#<br>
-                                >Total lines with an average execution time of over 1ms: #totalAvgOver#<br>
+		                            >Total lines with a count over 5000: #totalCountOver#<br>
+		                            >Total lines with an execution time of over 1ms: #totalTimeOver#<br>
+		                            >Total lines with an average execution time of over 1ms: #totalAvgOver#<br>
 
-                                <cfif coveredLines gt 0>
-                                        >Code Coverage: #codeCoverage * 100#(#coveredLines# of #totalLines# lines)<br>
-                                <cfelse>
-                                        >Code Coverage: 0% (0 of #totalLines# lines)<br>
-                                </cfif>
+                                    <cfif coveredLines gt 0>
+                                            >Code Coverage: #codeCoverage * 100#(#coveredLines# of #totalLines# lines)<br>
+                                    <cfelse>
+                                            >Code Coverage: 0% (0 of #totalLines# lines)<br>
+                                    </cfif>
                                 </p>
                             <cfcatch>
                                     <p>
@@ -443,21 +452,20 @@ designed to provide read-only access to a specific directory of files.
     <div id="fileframe">
 
         <!-- BEGIN: File Tree. -->
-    <div id="filetree">
-
-<!---
-   Output the file tree list. This will create an
-   unordered list of unordered lists.
---->
-            #OutputDirectory(
-    REQUEST.FileQuery,
-    REQUEST.RootDirectory,
-    REQUEST.TargetFile,
-    REQUEST.RootDirectory,
-    REQUEST.Slash
-        )#
-
-    </div>
+		<div id="filetree">
+			<!---
+			   Output the file tree list. This will create an
+			   unordered list of unordered lists.
+			--->
+	        #OutputDirectory
+			(
+				REQUEST.FileQuery,
+				REQUEST.RootDirectory,
+				REQUEST.TargetFile,
+				REQUEST.RootDirectory,
+				REQUEST.Slash
+		    )#
+		</div>
         <!-- END: File Tree. -->
 
     </div>
@@ -468,16 +476,16 @@ designed to provide read-only access to a specific directory of files.
     <div id="contentframe">
 
         <!-- BEGIN: Content. -->
-    <div id="content">
+		<div id="content">
 
-        <h2>
-            File: <span id="filename"></span>
-        </h2>
+		    <h2>
+		        File: <span id="filename"></span>
+		    </h2>
 
-<!--- Output file data. --->
-        <div id="fileoutput"></div>
+			<!--- Output file data. --->
+		    <div id="fileoutput"></div>
 
-    </div>
+		</div>
         <!-- END: Content. -->
 
     </div>

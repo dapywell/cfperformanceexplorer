@@ -47,6 +47,11 @@ h1 {
     padding: 0 0 0 0;
 }
 
+h1#warnMetricData {
+    color: red;
+    font-weight: bold;
+}
+
 div#filetree {
     font-size: 1.1em;
     line-height: 1.1em;

@@ -151,8 +151,6 @@ designed to provide read-only access to a specific directory of files.
                 <cfloop query="LOCAL.File">
                     <cfset fileExtension = ListLast( LOCAL.File.name, "." )>
 
-                    <!--- Check file extensions if 'cfc' or 'cfm' then add to file browser --->
-                    <cfif fileExtension EQ "cfc" OR fileExtension EQ "cfm" >
                         <!--- Get full, expanded path of the current file. --->
                         <cfset LOCAL.FilePath = (LOCAL.File.directory & ARGUMENTS.Slash & LOCAL.File.name)/>
                         <!---
@@ -164,7 +162,6 @@ designed to provide read-only access to a specific directory of files.
                         <li>
                             <a id="#LOCAL.RelativeFilePath#" class="file<cfif (ARGUMENTS.TargetFile EQ LOCAL.FilePath)> selected</cfif>">#LOCAL.File.name#</a>
                         </li>
-                    </cfif>
                 </cfloop>
 
             </cfif>

@@ -98,12 +98,20 @@ function ShowFile(strPath) {
             file: encodeURI(strPath)
         },
         function (strFileData) {
-            var data = $(strFileData);
-            $(data).each(function (k, v) {
-                if ($(v).attr('id') !== undefined) {
-                    $("#" + $(v).attr('id')).replaceWith(v);
-                }
-            });
+            try
+            {
+                var data = $(strFileData);
+                $(data).each(function (k, v) {
+                    if ($(v).attr('id') !== undefined) {
+                        $("#" + $(v).attr('id')).replaceWith(v);
+                    }
+                });
+            }
+            catch( err )
+            {
+                $("table").remove(".lines");
+                $(".type-coldfusion #warnMetricData").text("Unable to parse this file!");
+            }
 
             // Jump back to top.
             window.location.hash = "content";
