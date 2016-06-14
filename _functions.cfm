@@ -259,32 +259,50 @@ designed to provide read-only access to a specific directory of files.
             required="true"
             hint="The line number in the URL that is being tracked."/>
     <cfset emptyStruct = StructNew()>
+    <cfset lineMetric = "" >
+    <cfset agentInstrumentation= "" >
+
     <cftry>
         <cfset fragentClass = createObject("java", "com.intergral.fusionreactor.agent.Agent")>
         <cfset lineMetric = createObject("java", "com.intergral.fusionreactor.plugin.coldfusion.lineperformance.LineMetric")>
-        <cfset lineMetricMap = createObject("java", "java.util.Map")>
-        <cfset lineMetricMap = fragentClass.getAgentInstrumentation().get("cflpi").getLineMetrics( urlToTrack )>
-        <cfset lineMets = StructNew()>
-        <cfif lineMetricMap.containsKey(JavaCast("int",lineNo)) IS True>
-            <cfset lineMetric = lineMetricMap.get(JavaCast("int",lineNo))>
-            <cfset lineMets.count = lineMetric.getCount()>
-            <cfset lineMets.time = NumberFormat(lineMetric.getLastLineExecutionNanoTime() / 1000000, "_________.___")>
-            <cfif lineMets.count eq 0>
-                <cfset count = 1>
-            <cfelse>
-                <cfset count = lineMets.count>
-            </cfif>
-            <cfset avgms = (lineMetric.getNanoTime() / count) / 1000000>
-            <cfset totalms = lineMetric.getNanoTime() / 1000000>
-            <cfset lineMets.avg = NumberFormat(avgms, "________.___")>
-            <cfset lineMets.total = NumberFormat(totalms, "_________")>
-
-            <cfreturn #lineMets#/>
-        </cfif>
-        <cfreturn #lineMets#/>
+        <cfset agentInstrumentation = fragentClass.getAgentInstrumentation()>
         <cfcatch>
+            <cfoutput>#cfcatch#</cfoutput>
             <cfreturn #emptyStruct#/>
         </cfcatch>
     </cftry>
 
+    <cftry>
+        <cfif isDefined("agentInstrumentation")>
+            <cfset cflpi = agentInstrumentation.get("cflpi")>
+            <cfif isDefined("cflpi")>
+                <cfset lineMetricMap = cflpi.getLineMetrics( urlToTrack )>
+                <cfif IsNull(lineMetricMap)>
+                    <cfreturn #emptyStruct#/>
+                <cfelse>
+                    <cfif lineMetricMap.containsKey(JavaCast("int",lineNo)) IS TRUE>
+                        <cfset lineMets = StructNew()>
+                        <cfset lineMetric = lineMetricMap.get(JavaCast("int",lineNo))>
+                        <cfset lineMets.count = lineMetric.getCount()>
+                        <cfset lineMets.time = NumberFormat(lineMetric.getLastLineExecutionNanoTime() / 1000000, "_________.___")>
+                        <cfif lineMets.count EQ 0>
+                            <cfset count = 1>
+                        <cfelse>
+                            <cfset count = lineMets.count>
+                        </cfif>
+                        <cfset avgms = (lineMetric.getNanoTime() / count) / 1000000>
+                        <cfset totalms = lineMetric.getNanoTime() / 1000000>
+                        <cfset lineMets.avg = NumberFormat(avgms, "________.___")>
+                        <cfset lineMets.total = NumberFormat(totalms, "_________")>
+                        <cfreturn #lineMets#/>
+                    </cfif>
+                </cfif>
+            </cfif>
+        </cfif>
+        <cfreturn #emptyStruct#/>
+        <cfcatch>
+            <cfdump var="#cfcatch#">
+            <cfreturn #emptyStruct#/>
+        </cfcatch>
+    </cftry>
 </cffunction>
