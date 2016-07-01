@@ -429,9 +429,9 @@ designed to provide read-only access to a specific directory of files.
     <title>CF Line Performance Explorer</title>
 
     <!-- Linked files. -->
-    <link rel="stylesheet" type="text/css" href="./style.css"/>
-    <script type="text/javascript" src="jquery.js"></script>
-    <script type="text/javascript" src="scripts.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/scripts.js"></script>
 </head>
 <body>
 
