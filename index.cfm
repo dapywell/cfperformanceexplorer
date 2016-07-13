@@ -223,7 +223,14 @@ designed to provide read-only access to a specific directory of files.
                     action="READ"
                     file="#REQUEST.TargetFile#"
                     variable="REQUEST.FileData"/>
-
+                    
+			<!---Replace Windows CRLF with CR--->
+			<cfset REQUEST.FileData = replaceNoCase( REQUEST.FileData, chr( 13 ) & chr( 10 ), chr( 13 ), 'all' )>
+			<!---Replace lone LF with CR--->
+			<cfset REQUEST.FileData = replaceNoCase( REQUEST.FileData, chr( 10 ), chr( 13 ), 'all' )>
+			<!---Break on CR, keeping empty lines---> 
+			<cfset request.fileLines = listToArray( REQUEST.FileData, chr( 13 ), true )>
+			
             <cfsetting enableCFoutputOnly="No">
             <cfsavecontent variable="FileContent">
                 <cfoutput>
@@ -236,7 +243,7 @@ designed to provide read-only access to a specific directory of files.
                         <cfset coveredLines = getCodeCoverageLineCount(REQUEST.TargetFile)>
                         <cfset codeCoverage = getCodeCoverage(REQUEST.TargetFile)>
                         <cfset i = 1>
-                        <cfloop list="#REQUEST.FileData#" index="chars" delimiters="#chr(10)##chr(13)#">
+                        <cfloop array="#request.fileLines#" index="chars">
                             <cfset metrics = getLineMets(REQUEST.TargetFile, i)>
                             <cfif not StructIsEmpty(metrics)>
                                 <cfset showDebug = "true">
@@ -291,7 +298,7 @@ designed to provide read-only access to a specific directory of files.
                                <h1 id="warnMetricData"> No metric data currently exists for this file. </h1>
                         </cfif>
 
-                        <cfloop list="#REQUEST.FileData#" index="chars" delimiters="#chr(10)##chr(13)#">
+                        <cfloop array="#request.fileLines#" index="chars">
                             <cfset metrics = getLineMets(REQUEST.TargetFile, i)>
                             <cfif StructIsEmpty(metrics)>
                                 <tr class="theline">
